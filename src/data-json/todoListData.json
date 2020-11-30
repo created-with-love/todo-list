@@ -1,0 +1,11 @@
+[
+  { "id": "id-1", "text": "Learn JavaScript Basics", "completed": true },
+  { "id": "id-2", "text": "Learn React Basics", "completed": false },
+  {
+    "id": "id-3",
+    "text": "Figure out how React Router works",
+    "completed": false
+  },
+  { "id": "id-4", "text": "Learn React Redux", "completed": false },
+  { "id": "id-5", "text": "Learn how to create SPA", "completed": false }
+]
