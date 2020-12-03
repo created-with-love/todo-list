@@ -1,12 +1,27 @@
-import './App.css';
-import TodoList from './TodoList';
 import React, { Component } from 'react';
+import shortid from 'shortid';
+import Container from './components/Container';
+import TodoList from './components/TodoList';
+import TodoEditor from './components/TodoEditor';
+import Filter from './components/Filter';
 import initialTodos from './data-json/todoListData.json';
-import s from './TodoList/TodoList.module.css';
 
 class App extends Component {
   state = {
     todos: initialTodos,
+    filter: '',
+  };
+
+  addTodo = text => {
+    const todo = {
+      id: shortid.generate(),
+      text,
+      completed: false,
+    };
+
+    this.setState(({ todos }) => ({
+      todos: [todo, ...todos],
+    }));
   };
 
   deleteTodo = todoId => {
@@ -15,24 +30,59 @@ class App extends Component {
     }));
   };
 
-  render() {
+  toggleCompleted = todoId => {
+    this.setState(({ todos }) => ({
+      todos: todos.map(todo =>
+        todo.id === todoId ? { ...todo, completed: !todo.completed } : todo,
+      ),
+    }));
+  };
+
+  changeFilter = e => {
+    this.setState({ filter: e.currentTarget.value });
+  };
+
+  getVisibleTodos = () => {
+    const { filter, todos } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+
+    return todos.filter(todo =>
+      todo.text.toLowerCase().includes(normalizedFilter),
+    );
+  };
+
+  calculateCompletedTodos = () => {
     const { todos } = this.state;
 
-    // вычисляю количество "готовых" элементов
-    const completedTodos = todos.reduce(
-      (acc, todo) => (todo.completed ? acc + 1 : acc),
+    return todos.reduce(
+      (total, todo) => (todo.completed ? total + 1 : total),
       0,
     );
+  };
+
+  render() {
+    const { todos, filter } = this.state;
+    const totalTodoCount = todos.length;
+    const completedTodoCount = this.calculateCompletedTodos();
+    const visibleTodos = this.getVisibleTodos();
 
     return (
-      <>
-        <div className={s.Todos__Statistic}>
-          <p>Общее количество: {todos.length}</p>
-          <p>Количество выполненных: {completedTodos}</p>
+      <Container>
+        <div>
+          <p>Total count: {totalTodoCount}</p>
+          <p>Completed: {completedTodoCount}</p>
         </div>
 
-        <TodoList todos={todos} onDeleteTodo={this.deleteTodo} />
-      </>
+        <TodoEditor onSubmit={this.addTodo} />
+
+        <Filter value={filter} onChange={this.changeFilter} />
+
+        <TodoList
+          todos={visibleTodos}
+          onDeleteTodo={this.deleteTodo}
+          onToggleCompleted={this.toggleCompleted}
+        />
+      </Container>
     );
   }
 }

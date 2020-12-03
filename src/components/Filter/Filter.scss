@@ -1,0 +1,17 @@
+@import 'styles/shared.scss';
+
+.filter {
+  display: block;
+  padding: 5px;
+  margin: 10px;
+
+  &__text {
+    font-family: $primary-font-stack;
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  &__input {
+    padding: 5px;
+  }
+}
