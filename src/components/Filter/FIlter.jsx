@@ -2,13 +2,13 @@ import React from 'react';
 import './Filter.scss';
 
 const Filter = ({ value, onChange }) => (
-  <label class="filter">
-    <p class="filter__text">Filter by name:</p>
+  <label className="filter">
+    <p className="filter__text">Filter by name:</p>
     <input
       type="text"
       value={value}
       onChange={onChange}
-      class="filter__input"
+      className="filter__input"
     />
   </label>
 );
