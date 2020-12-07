@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 import './Modal.scss';
+import IconButton from '../IconButton/IconButton';
+import { ReactComponent as CloseIcon } from '../../icons/close.svg';
 
 const modalRoot = document.querySelector('#modal-root');
 
@@ -32,7 +34,16 @@ export default class Modal extends Component {
     // "портал" для модалки (убирает костыль с z-index и оверфлоу)
     return createPortal(
       <div className="Modal__backdrop" onClick={this.handelBackdropClick}>
-        <div className="Modal__content">{this.props.children}</div>
+        <div className="Modal__content">
+          <IconButton
+            className="Modal__close IconButton"
+            aria-label="Close Modal icon"
+            onClick={this.props.onClose}
+          >
+            <CloseIcon width="32" height="32" fill="#black" />
+          </IconButton>
+          {this.props.children}
+        </div>
       </div>,
       modalRoot,
     );

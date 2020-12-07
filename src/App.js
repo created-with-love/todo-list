@@ -8,7 +8,13 @@ import initialTodos from './data-json/todoListData.json';
 import Modal from './components/Modal';
 import IconButton from './components/IconButton';
 import { ReactComponent as AddIcon } from './icons/add.svg';
-import { ReactComponent as CloseIcon } from './icons/close.svg';
+import Stats from './components/Stats';
+
+const barStyles = {
+  display: 'flex',
+  alignItems: 'flex-end',
+  marginBottom: 20,
+};
 
 class App extends Component {
   state = {
@@ -103,34 +109,25 @@ class App extends Component {
 
     return (
       <Container>
-        <div>
-          <p>Total count: {totalTodoCount}</p>
-          <p>Completed: {completedTodoCount}</p>
+        <div style={barStyles}>
+          <Stats total={totalTodoCount} completed={completedTodoCount} />
+          <IconButton onClick={this.toggleModal} aria-label="Add Todo">
+            <AddIcon width="40" height="40" fill="#black" />
+          </IconButton>
+          <Filter value={filter} onChange={this.changeFilter} />
         </div>
-        <IconButton onClick={this.toggleModal} aria-label="Add Todo">
-          <AddIcon width="40" height="40" fill="#black" />
-        </IconButton>
-
-        {showModal && (
-          <Modal onClose={this.toggleModal}>
-            <IconButton
-              className="Modal__close IconButton"
-              aria-label="Close Modal icon"
-              onClick={this.toggleModal}
-            >
-              <CloseIcon width="32" height="32" fill="#black" />
-            </IconButton>
-            <TodoEditor onSubmit={this.addTodo} />
-          </Modal>
-        )}
-
-        <Filter value={filter} onChange={this.changeFilter} />
 
         <TodoList
           todos={visibleTodos}
           onDeleteTodo={this.deleteTodo}
           onToggleCompleted={this.toggleCompleted}
         />
+
+        {showModal && (
+          <Modal onClose={this.toggleModal}>
+            <TodoEditor onSubmit={this.addTodo} />
+          </Modal>
+        )}
       </Container>
     );
   }
