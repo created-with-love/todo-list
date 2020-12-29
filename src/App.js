@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
+import './App.css';
 import Container from './components/Container';
 import TodoList from './components/TodoList';
 import TodoEditor from './components/TodoEditor';
@@ -9,12 +10,7 @@ import Modal from './components/Modal';
 import IconButton from './components/IconButton';
 import { ReactComponent as AddIcon } from './icons/add.svg';
 import Stats from './components/Stats';
-
-const barStyles = {
-  display: 'flex',
-  alignItems: 'flex-end',
-  marginBottom: 20,
-};
+import Header from './components/Header';
 
 class App extends Component {
   state = {
@@ -109,7 +105,9 @@ class App extends Component {
 
     return (
       <Container>
-        <div style={barStyles}>
+        <Header />
+
+        <div className="barStyles">
           <Stats total={totalTodoCount} completed={completedTodoCount} />
           <IconButton onClick={this.toggleModal} aria-label="Add Todo">
             <AddIcon width="40" height="40" fill="#black" />

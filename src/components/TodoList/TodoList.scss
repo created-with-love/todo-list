@@ -4,54 +4,11 @@
   @extend %list;
 
   display: grid;
+  max-width: 100%;
+  flex-wrap: wrap;
   justify-content: center;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: minmax(400px);
   grid-gap: 24px;
-}
-
-.TodoList__item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px;
-  border: 1px solid $black;
-  border-radius: 4px;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 8px;
-
-    background-color: $green;
-
-    transform: scaleX(0);
-    transition: transform 250ms $timing-function;
-  }
-
-  &--completed::before {
-    transform: scaleX(1);
-  }
-}
-
-.TodoList__text {
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-right: 24px;
-  margin-left: 24px;
-
-  .TodoList__item--completed & {
-    text-decoration: line-through;
-  }
-}
-
-.TodoList__checkbox {
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
 }
 
 .TodoList__btn {
@@ -74,6 +31,8 @@
   }
 }
 
-.TodoList__label {
-  display: flex;
+@media (max-width: 375px) {
+  .TodoList {
+    grid-gap: 12px;
+  }
 }

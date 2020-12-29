@@ -13,11 +13,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: all 250ms ease-in;
 
   &__close {
     background-color: $red;
   }
   &:focus {
     outline-style: ridge;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 375px) {
+  .IconButton {
+    padding: 8px;
   }
 }

@@ -1,10 +1,17 @@
 import React from 'react';
 import './Todo.scss';
+import classNames from 'classnames';
 import IconButton from '../../components/IconButton';
 import { ReactComponent as DeleteIcon } from '../../icons/delete.svg';
 
-const Todo = ({ text, onToggleCompleted, onDeleteTodo, completed }) => (
-  <>
+const Todo = ({ id, text, onToggleCompleted, onDeleteTodo, completed }) => (
+  <li
+    draggable="true"
+    key={id}
+    className={classNames('TodoList__item', {
+      'TodoList__item--completed': completed,
+    })}
+  >
     <label className="TodoList__label">
       <input
         type="checkbox"
@@ -22,7 +29,7 @@ const Todo = ({ text, onToggleCompleted, onDeleteTodo, completed }) => (
     >
       <DeleteIcon width="32" height="32" fill="#black" />
     </IconButton>
-  </>
+  </li>
 );
 
 export default Todo;
