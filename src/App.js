@@ -31,15 +31,9 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const nextTodos = this.state.todos;
-    const prevTodos = prevState.todos;
     // Вызывается каждый раз, когда были обновления в state или передаваемых пропсах(если это потомок)
     if (nextTodos !== prevState) {
       localStorage.setItem('todos', JSON.stringify(nextTodos));
-    }
-
-    // вариант2 для закрытия модалки после добавления элемента
-    if (nextTodos.length > prevTodos.length && prevTodos.length !== 0) {
-      this.toggleModal();
     }
   }
 
@@ -53,6 +47,8 @@ class App extends Component {
     this.setState(({ todos }) => ({
       todos: [todo, ...todos],
     }));
+
+    this.setState({ showModal: false });
   };
 
   deleteTodo = todoId => {
