@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import shortid from 'shortid';
+
 import './App.css';
 import Container from './components/Container';
 import TodoList from './components/TodoList';
@@ -14,77 +14,7 @@ import Header from './components/Header';
 
 class App extends Component {
   state = {
-    todos: initialTodos,
-    filter: '',
     showModal: false,
-  };
-
-  componentDidMount() {
-    // Вызывается единожды после 1-го рендера
-    const todos = localStorage.getItem('todos');
-    const parsedTodos = JSON.parse(todos);
-    // нужно делать проверку перед работой с методом setState, иначе приложение зациклится (рендер-сетстейт-рендер)
-    if (parsedTodos) {
-      this.setState({ todos: parsedTodos });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const nextTodos = this.state.todos;
-    // Вызывается каждый раз, когда были обновления в state или передаваемых пропсах(если это потомок)
-    if (nextTodos !== prevState) {
-      localStorage.setItem('todos', JSON.stringify(nextTodos));
-    }
-  }
-
-  addTodo = text => {
-    const todo = {
-      id: shortid.generate(),
-      text,
-      completed: false,
-    };
-
-    this.setState(({ todos }) => ({
-      todos: [todo, ...todos],
-    }));
-
-    this.setState({ showModal: false });
-  };
-
-  deleteTodo = todoId => {
-    this.setState(prevState => ({
-      todos: prevState.todos.filter(todo => todo.id !== todoId),
-    }));
-  };
-
-  toggleCompleted = todoId => {
-    this.setState(({ todos }) => ({
-      todos: todos.map(todo =>
-        todo.id === todoId ? { ...todo, completed: !todo.completed } : todo,
-      ),
-    }));
-  };
-
-  changeFilter = e => {
-    this.setState({ filter: e.currentTarget.value });
-  };
-
-  getVisibleTodos = () => {
-    const { filter, todos } = this.state;
-    const normalizedFilter = filter.toLowerCase();
-
-    return todos.filter(todo =>
-      todo.text.toLowerCase().includes(normalizedFilter),
-    );
-  };
-
-  calculateCompletedTodos = () => {
-    const { todos } = this.state;
-
-    return todos.reduce(
-      (total, todo) => (todo.completed ? total + 1 : total),
-      0,
-    );
   };
 
   toggleModal = () => {
@@ -94,32 +24,25 @@ class App extends Component {
   };
 
   render() {
-    const { todos, filter, showModal } = this.state;
-    const totalTodoCount = todos.length;
-    const completedTodoCount = this.calculateCompletedTodos();
-    const visibleTodos = this.getVisibleTodos();
+    const { showModal } = this.state;
 
     return (
       <Container>
         <Header />
 
         <div className="barStyles">
-          <Stats total={totalTodoCount} completed={completedTodoCount} />
+          <Stats />
           <IconButton onClick={this.toggleModal} aria-label="Add Todo">
             <AddIcon width="40" height="40" fill="#black" />
           </IconButton>
-          <Filter value={filter} onChange={this.changeFilter} />
+          <Filter />
         </div>
 
-        <TodoList
-          todos={visibleTodos}
-          onDeleteTodo={this.deleteTodo}
-          onToggleCompleted={this.toggleCompleted}
-        />
+        <TodoList />
 
         {showModal && (
           <Modal onClose={this.toggleModal}>
-            <TodoEditor onSubmit={this.addTodo} />
+            <TodoEditor onClose={this.toggleModal} />
           </Modal>
         )}
       </Container>

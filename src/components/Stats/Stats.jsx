@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './Stats.scss';
 
 const Stats = ({ total, completed }) => (
@@ -14,4 +15,13 @@ const Stats = ({ total, completed }) => (
   </div>
 );
 
-export default Stats;
+const calculateCompletedItems = items => {
+  return items.reduce((total, todo) => (todo.completed ? total + 1 : total), 0);
+};
+
+const mapStateToProps = state => ({
+  total: state.todos.items.length,
+  completed: calculateCompletedItems(state.todos.items),
+});
+
+export default connect(mapStateToProps, null)(Stats);
